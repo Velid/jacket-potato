@@ -9,7 +9,7 @@ Just click that `Raw` button above to view markdown source.
 ---
 <!-- copy everything below this line --> 
 
-- [ ] Add Capistrano gems and whenever to your Gemfile, `bundle` it afterwards:
+- [ ] Add Capistrano gems, JS runtime and whenever for cron goodies to your Gemfile, `bundle` it afterwards:
   ```ruby
   group :development do
     gem 'capistrano'
@@ -22,9 +22,9 @@ Just click that `Raw` button above to view markdown source.
     gem 'unicorn'
     gem 'mysql2'
     gem 'capistrano3-unicorn'
-    gem 'whenever'
     gem 'execjs'
     gem 'therubyracer',  platforms: :ruby
+    gem 'whenever', :require => false
   end
   ```
 
@@ -101,7 +101,7 @@ Just click that `Raw` button above to view markdown source.
   end
   ```
 
-- [ ] Set correct server address and username in `config/deploy/production.rb`:
+- [ ] Set correct server address and username in `config/deploy/production.rb`. Make sure all three crucial capistrano roles (`web`, `app` and `db`) are set, as in example below:
   ```ruby
   # Prepare stages
   # ==============
@@ -114,7 +114,7 @@ Just click that `Raw` button above to view markdown source.
   # server list. The second argument is a, or duck-types, Hash and is
   # used to set extended properties on the server.
 
-  server 'example.com', user: 'deploy', roles: %w{web app}, my_property: :my_value
+  server 'example.com', user: 'deploy', roles: %w{web app db}, my_property: :my_value
   ```
 
 - [ ] Require libraries in the Capfile, it should look like this:
@@ -242,6 +242,13 @@ Just click that `Raw` button above to view markdown source.
   end
   ```
 
+- [ ] Use whenever to start unicorn on every reboot. First, run `wheneverize .` from project directory. Afterwards, add the following to your `config/schedule.rb`:
+  ```ruby
+  every :reboot do
+    rake 'unicorn:start'
+  end
+  ```
+
 - [ ] Add SSH key to the server:
   ```
   ssh-copy-id -i .ssh/id_rsa.pub username:password@remotehost
@@ -320,13 +327,6 @@ Just click that `Raw` button above to view markdown source.
   ```
 
 - [ ] Make sure server hostname is set correctly in `/etc/hosts` and `/etc/hostname` files
-
-- [ ] Use whenever to start unicorn on every reboot. First, run `wheneverize .` from project directory. Afterwards, add the following to your `config/schedule.rb`:
-  ```ruby
-  every :reboot do
-    rake 'unicorn:start'
-  end
-  ```
 
 
 <!---
