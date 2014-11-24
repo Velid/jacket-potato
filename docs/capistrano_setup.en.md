@@ -5,6 +5,7 @@ This step-by-step guide is intended to be be used as a Github Issue description,
 Just click that `Raw` button above to view markdown source.
 
 ---
+<!-- copy everything below this line --> 
 
 - [ ] Add Capistrano gems and whenever to your Gemfile, `bundle` it afterwards:
   ```ruby
@@ -15,10 +16,21 @@ Just click that `Raw` button above to view markdown source.
     gem 'capistrano-rvm'
   end
 
-  gem 'whenever'
+  group :production do
+    gem 'unicorn'
+    gem 'mysql2'
+    gem 'capistrano3-unicorn'
+    gem 'whenever'
+  end
   ```
 
 - [ ] Generate Capistrano default configurations via `cap install`
+
+- [ ] Set correct repository path and app name in `config/deploy.rb`
+  ```ruby
+  set :application, 'my_app_name'
+  set :repo_url, 'git@example.com:me/my_repo.git'
+  ```
 
 - [ ] Require libraries in the Capfile, it should look like this:
   ```ruby
@@ -57,28 +69,28 @@ Just click that `Raw` button above to view markdown source.
   Dir.glob('lib/capistrano/**/*.rb').each { |r| import r }
   ```
 
-- [ ] Create new unicorn configuration under `config/unicorn/production.rb`:
+- [ ] Create new unicorn configuration under `config/unicorn/production.rb`, correct application paths if needed:
   ```ruby
   worker_processes 2
 
-  working_directory "/application/app_name/current" # available in 0.94.0+
+  working_directory "/application/APP_NAME/current" # available in 0.94.0+
 
   # listen on both a Unix domain socket and a TCP port,
   # we use a shorter backlog for quicker failover when busy
-  listen "/application/app_name/shared/tmp/sockets/app_name.unicorn.sock", :backlog => 64
+  listen "/application/APP_NAME/shared/tmp/sockets/APP_NAME.unicorn.sock", :backlog => 64
   listen 8080, :tcp_nopush => true
 
   # nuke workers after 30 seconds instead of 60 seconds (the default)
   timeout 30
 
   # feel free to point this anywhere accessible on the filesystem
-  pid "/application/app_name/shared/tmp/pids/unicorn.pid"
+  pid "/application/APP_NAME/shared/tmp/pids/unicorn.pid"
 
   # By default, the Unicorn logger will write to stderr.
   # Additionally, ome applications/frameworks log to stderr or stdout,
   # so prevent them from going to /dev/null when daemonized here:
-  stderr_path "/application/app_name/shared/log/unicorn.stderr.log"
-  stdout_path "/application/app_name/shared/log/unicorn.stdout.log"
+  stderr_path "/application/APP_NAME/shared/log/unicorn.stderr.log"
+  stdout_path "/application/APP_NAME/shared/log/unicorn.stdout.log"
 
   # combine Ruby 2.0.0dev or REE with "preload_app true" for memory savings
   # http://rubyenterpriseedition.com/faq.html#adapt_apps_for_cow
@@ -159,10 +171,10 @@ Just click that `Raw` button above to view markdown source.
   ```
   sudo apt-get update
   sudo apt-get install libmysql-ruby libmysqlclient-dev libmagickwand-dev
-  sudo apt-get install imageшagick
+  sudo apt-get install imagemagick
   ```
 
-- [ ] Run capistrano deploy for the first time:
+- [ ] Push all changes to your Git repository and run capistrano deploy for the first time:
   ```
   cap deploy production
   ```
