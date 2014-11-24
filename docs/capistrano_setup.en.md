@@ -2,9 +2,11 @@
 
 This step-by-step guide is intended to be be used as a Github Issue description, feel free to copy everything below this line - it will show up as a checklist on your issue. 
 
+Just click that `Raw` button above to view markdown source.
+
 ---
 
-- [ ] Add Capistrano gems to your Gemfile:
+- [ ] Add Capistrano gems and whenever to your Gemfile, `bundle` it afterwards:
   ```ruby
   group :development do
     gem 'capistrano'
@@ -12,7 +14,11 @@ This step-by-step guide is intended to be be used as a Github Issue description,
     gem 'capistrano-bundler'
     gem 'capistrano-rvm'
   end
+
+  gem 'whenever'
   ```
+
+- [ ] Generate Capistrano default configurations via `cap install`
 
 - [ ] Require libraries in the Capfile, it should look like this:
   ```ruby
@@ -41,6 +47,14 @@ This step-by-step guide is intended to be be used as a Github Issue description,
   require 'capistrano/bundler'
   require 'capistrano/rails/assets'
   require 'capistrano/rails/migrations'
+
+  # Whenever integration
+  # Used by default to reload your unicorn on reboots
+  require "whenever/capistrano"
+
+  # Loads custom tasks from `lib/capistrano/tasks' if you have any defined.
+  Dir.glob('lib/capistrano/tasks/*.rake').each { |r| import r }
+  Dir.glob('lib/capistrano/**/*.rb').each { |r| import r }
   ```
 
 - [ ] Create new unicorn configuration under `config/unicorn/production.rb`:
