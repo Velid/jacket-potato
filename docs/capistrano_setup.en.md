@@ -4,6 +4,8 @@ This step-by-step guide is intended to be be used as a Github Issue description,
 
 Just click that `Raw` button above to view markdown source.
 
+<!-- [todo] - add debug suggestions for each deployment stage -->
+
 ---
 <!-- copy everything below this line --> 
 
@@ -280,7 +282,7 @@ Just click that `Raw` button above to view markdown source.
     reconnect: true
   ```
 
-- [ ] Use `rails secret` command to generate new production secret for your application, put it at the start of the server's `~/.bashrc` file in the following way:
+- [ ] Use `rake secret` command to generate new production secret for your application, put it at the start of the server's `~/.bashrc` file in the following way:
   ```
   # Secret key for rails application
   export SECRET_KEY_BASE="your_generated_secret_key"
@@ -316,3 +318,5 @@ Just click that `Raw` button above to view markdown source.
       }
   }
   ```
+
+- [ ] Make sure server hostname is set correctly in `/etc/hosts` and `/etc/hostname` files
