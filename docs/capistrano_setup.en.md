@@ -320,3 +320,61 @@ Just click that `Raw` button above to view markdown source.
   ```
 
 - [ ] Make sure server hostname is set correctly in `/etc/hosts` and `/etc/hostname` files
+
+- [ ] Use whenever to start unicorn on every reboot. First, run `wheneverize .` from project directory. Afterwards, add the following to your `config/schedule.rb`:
+  ```ruby
+  every :reboot do
+    rake 'unicorn:start'
+  end
+  ```
+
+
+<!---
+                                     .:::::::::.
+                                  .:::::::::::::::.
+                                 :::::::::::::::::::
+                                :::::::::::::::::::::
+                             :  `:::::::::::::::::::::
+                            :: .. `:::::::::::::::'''  .::
+                            :: `{:.,..````````...   .::''
+                            `:::..``{{{CCC}}}''..:::''.
+                   .,c$$h.    `'::::::.....:::''''.,c$$L
+                  J$$$$$.?. ,d$=  `````.,   .zcc$$$$$$$$.
+                ,$$$$$$$F."4P".:`:: ,$$".:::. "$$$$$$$$$h   ,cc,
+               ,$$$$$P".,P." '',c `,d$$ `'``':.`$$$$$$$$$h ="3$$c.
+              .$$$$$F $$" dc -?""? ?$$',c$$c  ` ?$$$$$$$$F, d$$$$h.
+              J$$$$$$ $F ,$',""$$h.?$',,,,."" . `$$$$$$$$ d 3$$$$$$.
+              3$$$$$P $F $$    ?$$'J',$" `$$c  $$$$$$$$$P $h "$$$$$$
+               ?C'.,c$P $$$    J$$ J $F   $$$h $$$$$$$$$' $$$ $$$$$$h
+                `??""  ,$$$ h,c$$F.$ $h, ,$$$',$$$$$$$$$c,`$P.$$$$$$$
+                      ,$$$$c`??"",c, "$$$$$P',$$$$$$$$$$$h ?L'$$$$$$P
+                      $$$$$$$F zd$$$h  """',d$$$$$$$$$$$$$h`?.`??$$P'
+                     J$$$$P",c$$$$$$$h."$$$$$$$$$$$$$$$$$$$h. `??"'
+     ,cd$$$$$$$$$$h J$$$$",J$$$$$$$$$$$c ?$$$$$$$$$$$$$$$$$$$
+   ,$$???????$$$$$F.$$$$$ $$$$$$$$$$$$$$h`$$$$$$$$$$$$$$$$$$$h
+  J$P"        `""" J$$$$$c`$$$$$$$$$$$$$F,$$$$$$$$$$$$$$$$$P"'
+ d$"               J$??".  `??$$$$?????" $$$$$$$$$$$$$$$$$$ J$$$$$hcc,.
+J$$                J" ,','  ;    , ,. . . `"?$$$$$$$$$$$$$$ $$$$$$$$$$$$c,
+3$$                J ' } .{! ;! ;!;'!} - `!.  "?$$$$$$$$$$$.'$P??""""""?$$h
+`$P",nmn        .   c ' ;!! ;!! !!! '!} !; {!.`;`$$$???$$$$$c,           ?$$
+ ? uMMP ,nmnmdMMM'  3$c, `  ''' {!!''!!} !} `' ,c$$F nx.?$$$$$            $$
+  dMM",dMMMMMMP"'   `$$$h.`  ,____,=  `. ' ,ccc$$$$h MMMx."??"           z$$
+  MP nMMMMMMMM,      ?$$$$.`\ """"" ,-' .d$$$$$$$$$$c )MMMMMn.  ..     ,c$$P
+  " =MMMMMMMMMMMbm,   ?$$$$h.``````',c$$$$$$$$?????"",dMMMMMMMb;MMr .z$$$P"
+     "MMMMMMMMMMMMP'   ?$$$$$$$$$$$$$$$$$$$$$ nmMMMMMMMMMMMMMMP{MMM ?$$P"
+      `MMMMMMM          "$$$$$$$$$$$$$$$$$$$$."4MMMMMMMMMMMMMMb`MMM.`"
+       MM4MMMMx           "??$$$$$$$$$$$$$$$$$ccc= ,MMMMMMMMMMM "MM
+       4Mr "4MMr               ""?????????????"",nmMMMMMMMMMMMMP  "
+       `M    `"                $|c             4MMMPPP4MMMMMMP
+                               $|$              "      MMMM"
+                               $|$              ;!;   dMMP'
+                           ,,, "|"              ;' {! P" ;{!
+                      . . .  ...  -          `" , ;,,. -'!!!.
+                     ''' '.;;;;;.         ,!' ." `-._``--..`'
+                    ;;;;;..```..;;;{}   ''- ...;;;.   `~- ' ;;
+                  .`''!!!!!!!!''''`.;; ;;;;;;..````''-;' ,;!!'
+                  ''{;;......;;;;-'`   `'!!!!!!!!!!-- ,;!!'`
+                       ```````        !!;,,.````.,,;{!!'`
+                                       ```''''''''''``
+ 
+ Find updates for this checklist at https://github.com/Velid/jacket-potato/blob/master/docs/capistrano_setup.en.md -->
