@@ -1,6 +1,6 @@
 ### Basic Capistrano & unicorn configuration for Rails
 
-This step-by-step guide is intended to be be used as a Github Issue description, feel free to copy everything below this line - it will show up as a checklist on your issue. 
+This step-by-step guide is intended to be used as a Github Issue description, feel free to copy everything below this line - it will show up as a checklist on your issue. 
 
 Just click that `Raw` button above to view markdown source.
 
