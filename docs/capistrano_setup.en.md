@@ -26,10 +26,91 @@ Just click that `Raw` button above to view markdown source.
 
 - [ ] Generate Capistrano default configurations via `cap install`
 
-- [ ] Set correct repository path and app name in `config/deploy.rb`
+- [ ] Set correct repository path, app name and other parameters in `config/deploy.rb`. Example:
   ```ruby
-  set :application, 'my_app_name'
-  set :repo_url, 'git@example.com:me/my_repo.git'
+  # config valid only for Capistrano 3.1
+  lock '3.2.1'
+
+  set :application, 'app_name'
+
+  # setup repo details
+  set :scm, :git
+  set :repo_url, 'git@github.com:path/to_repository.git'
+
+  # how many old releases do we want to keep
+  set :keep_releases, 5
+
+  # Default deploy_to directory is /var/www/my_app
+  set :deploy_to, '/application/app_name'
+  set :deploy_user, 'deployer'
+
+  # files we want symlinking to specific entries in shared.
+  set :linked_files, %w{config/database.yml}
+
+  # dirs we want symlinking to shared
+  set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system public/ckeditor_assets}
+
+  # what specs should be run before deployment is allowed to
+  # continue, see lib/capistrano/tasks/run_tests.cap
+  set :tests, []
+
+  # which config files should be copied by deploy:setup_config
+  # see documentation in lib/capistrano/tasks/setup_config.cap
+  # for details of operations
+  set(:config_files, %w(
+    nginx.conf
+    log_rotation
+    monit
+    unicorn.rb
+    unicorn_init.sh
+  ))
+
+  # which config files should be made executable after copying
+  # by deploy:setup_config
+  set(:executable_config_files, %w(
+    unicorn_init.sh
+  ))
+
+  namespace :deploy do
+
+    desc 'Restart application'
+    task :restart do
+      on roles(:app), in: :sequence, wait: 5 do
+        # Your restart mechanism here, for example:
+        # execute :touch, release_path.join('tmp/restart.txt')
+      end
+
+      invoke 'unicorn:restart'
+    end
+
+    after :publishing, :restart
+
+    after :restart, :clear_cache do
+      on roles(:web), in: :groups, limit: 3, wait: 10 do
+        # Here we can do anything such as:
+        # within release_path do
+        #   execute :rake, 'cache:clear'
+        # end
+      end
+    end
+
+  end
+  ```
+
+- [ ] Set correct server address and username in `config/deploy/production.rb`:
+  ```ruby
+  # Prepare stages
+  # ==============
+  set :stage, :production
+  set :rails_env, :production
+
+  # Extended Server Syntax
+  # ======================
+  # This can be used to drop a more detailed server definition into the
+  # server list. The second argument is a, or duck-types, Hash and is
+  # used to set extended properties on the server.
+
+  server 'example.com', user: 'deploy', roles: %w{web app}, my_property: :my_value
   ```
 
 - [ ] Require libraries in the Capfile, it should look like this:
@@ -176,7 +257,7 @@ Just click that `Raw` button above to view markdown source.
 
 - [ ] Push all changes to your Git repository and run capistrano deploy for the first time:
   ```
-  cap deploy production
+  cap production deploy
   ```
 
 - [ ] On server create `shared/config/database.yml` file containing production credentials. Run deploy for the second time afterwards:
