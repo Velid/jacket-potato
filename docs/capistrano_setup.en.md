@@ -21,6 +21,8 @@ Just click that `Raw` button above to view markdown source.
     gem 'mysql2'
     gem 'capistrano3-unicorn'
     gem 'whenever'
+    gem 'execjs'
+    gem 'therubyracer',  platforms: :ruby
   end
   ```
 
@@ -248,6 +250,11 @@ Just click that `Raw` button above to view markdown source.
   CREATE DATABASE 'my_db' CHARACTER SET utf8 COLLATE utf8_general_ci;
   ```
 
+  or running standard rake task on your server:
+  ```
+  bundle exec rake db:create RAILS_ENV=productio
+  ```
+
 - [ ] Install additional libraries on server (using apt as an example):
   ```
   sudo apt-get update
@@ -277,4 +284,35 @@ Just click that `Raw` button above to view markdown source.
   ```
   # Secret key for rails application
   export SECRET_KEY_BASE="your_generated_secret_key"
+  ```
+
+- [ ] point Nginx configuration to the unicorn socket, assign domain names:
+  ```
+  upstream application {
+      server unix:/application/app_name/shared/tmp/sockets/app_name.unicorn.sock;
+  }
+
+  # Define separate server rule, as suggested in http://nginx.org/en/docs/http/converting_rewrite_rules.html
+  server {
+      listen       80;
+
+      server_name www.example.com;
+      return 301 http://example.com$request_uri;
+  }
+
+  server {
+      listen 80;
+
+      server_name example.com;
+
+      root /application/app_name/current/public;
+      try_files $uri @application;
+
+      location @application {
+          proxy_pass http://hostname:8080;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header Host $http_host;
+          proxy_redirect off;
+      }
+  }
   ```
