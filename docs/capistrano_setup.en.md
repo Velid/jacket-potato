@@ -316,7 +316,7 @@ Just click that `Raw` button above to view markdown source.
 
 - [ ] Add SSH key to the server:
   ```
-  ssh-copy-id -i .ssh/id_rsa.pub username:password@remotehost
+  ssh-copy-id -i ~/.ssh/id_rsa.pub username@remotehost
   ```
 
 - [ ] Create database on the server (MySQL used as an example):
