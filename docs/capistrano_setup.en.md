@@ -326,7 +326,7 @@ Just click that `Raw` button above to view markdown source.
 
   or running standard rake task on your server:
   ```
-  bundle exec rake db:create RAILS_ENV=productio
+  bundle exec rake db:create RAILS_ENV=production
   ```
 
 - [ ] Install additional libraries on server (using apt as an example):
