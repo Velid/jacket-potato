@@ -348,6 +348,7 @@ Just click that `Raw` button above to view markdown source.
     adapter: mysql2
     encoding: utf8
     database: potato
+    password: potato
     pool: 5
     timeout: 5000
     username: root
