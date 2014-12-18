@@ -392,6 +392,8 @@ Just click that `Raw` button above to view markdown source.
   }
   ```
 
+- [ ] Restart Nginx via `service nginx restart` command on the server
+
 - [ ] Make sure server hostname is set correctly in `/etc/hosts` and `/etc/hostname` files
 
 
